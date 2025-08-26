@@ -1,3 +1,6 @@
+// This is just sample/mock data stored in an array.
+// This mock data is useful for testing your app before you actually connect to a backend or AI.
+
 export const resumes: Resume[] = [
   {
     id: "1",
@@ -91,6 +94,13 @@ export const resumes: Resume[] = [
   },
 ];
 
+// This is not actual TypeScript code being used.
+// It’s a string that describes a TypeScript interface.
+// Why? Because later it will be sent to the AI model as instructions — basically telling the AI:
+// “Hey, when you return feedback, format it exactly like this!”
+
+// So this acts as a blueprint/schema for the AI’s response.
+
 export const AIResponseFormat = `
       interface Feedback {
       overallScore: number; //max 100
@@ -134,6 +144,15 @@ export const AIResponseFormat = `
         }[]; //give 3-4 tips
       };
     }`;
+
+
+// This is a function that generates a prompt (instructions) for the AI.
+// It returns a big string with all instructions, like:
+
+// Tell AI what role it is playing (resume analysis expert).
+// Ask it to rate the resume and give feedback.
+// Insert the job title and job description provided by the user.
+// Force AI to follow the AIResponseFormat you defined earlier.
 
 export const prepareInstructions = ({
   jobTitle,
