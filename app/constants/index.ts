@@ -92,6 +92,96 @@ export const resumes: Resume[] = [
       },
     },
   },
+  {
+    id: "4",
+    companyName: "Google",
+    jobTitle: "Frontend Developer",
+    imagePath: "/images/resume_04.png",
+    resumePath: "/resumes/resume-1.pdf",
+    feedback: {
+      overallScore: 67,
+      ATS: {
+        score: 90,
+        tips: [],
+      },
+      toneAndStyle: {
+        score: 90,
+        tips: [],
+      },
+      content: {
+        score: 90,
+        tips: [],
+      },
+      structure: {
+        score: 90,
+        tips: [],
+      },
+      skills: {
+        score: 90,
+        tips: [],
+      },
+    },
+  },
+  {
+    id: "5",
+    companyName: "Microsoft",
+    jobTitle: "Cloud Engineer",
+    imagePath: "/images/resume_05.png",
+    resumePath: "/resumes/resume-2.pdf",
+    feedback: {
+      overallScore: 90,
+      ATS: {
+        score: 90,
+        tips: [],
+      },
+      toneAndStyle: {
+        score: 90,
+        tips: [],
+      },
+      content: {
+        score: 90,
+        tips: [],
+      },
+      structure: {
+        score: 90,
+        tips: [],
+      },
+      skills: {
+        score: 90,
+        tips: [],
+      },
+    },
+  },
+  {
+    id: "6",
+    companyName: "Apple",
+    jobTitle: "iOS Developer",
+    imagePath: "/images/resume_06.png",
+    resumePath: "/resumes/resume-3.pdf",
+    feedback: {
+      overallScore: 79,
+      ATS: {
+        score: 90,
+        tips: [],
+      },
+      toneAndStyle: {
+        score: 90,
+        tips: [],
+      },
+      content: {
+        score: 90,
+        tips: [],
+      },
+      structure: {
+        score: 90,
+        tips: [],
+      },
+      skills: {
+        score: 90,
+        tips: [],
+      },
+    },
+  },
 ];
 
 // This is not actual TypeScript code being used.
