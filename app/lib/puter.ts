@@ -30,12 +30,12 @@ declare global {
                 ) => Promise <File | undefined >,
                 read : (path : string,) => Promise<Blob>,
                 delete : (path: string) => Promise<void>,
-                readdir : (path : string) => Promise<FSItem | undefined>,
+                readDir : (path : string) => Promise<FSItem[] | undefined>,
                 upload : (file : File[] | Blob[]) => Promise<FSItem>,
             },
             ai : {
                 chat : (
-                    prompts : string | ChatMessage[],
+                    prompt : string | ChatMessage[],
                     options? : PuterChatOptions,
                     testMode? : boolean,
                     imageUrl? : string | PuterChatOptions,
@@ -64,10 +64,78 @@ declare global {
     }
 }
 
-interface PuterStore {
+// PuterStore is acting like a central state definition for Zustand.
+// It has multiple “modules”:
+// auth → Authentication management
+// fs → File system
+// ai → AI services
+// kv → Key-value database
+// Plus some global states (isLoading, error, puterReady)
+// So, whenever you make a Zustand store with this interface, your app will have a single source of truth for all these functionalities.
 
+interface PuterStore {
+    isLoading : boolean,
+    puterReady : boolean,
+    error : string | null,
+
+    auth : {
+        user : PuterUser | null,
+        isAuthenticated : boolean,
+        signIn : () => Promise<void>,
+        signOut : () => Promise<void>,
+        refreshUser : () => Promise<void>,
+        checkAuthStatus : () => Promise<boolean>,
+        getUser : () => PuterUser | null,
+    },
+    fs : {
+        write : (
+            path : string,
+            data : string | File | Blob
+        ) => Promise <File | undefined>,
+        read : (path : string,) => Promise<Blob | undefined>,
+        delete : (path: string) => Promise<void>,
+        readDir : (path : string) => Promise<FSItem[] | undefined>,
+        upload : (file : File[] | Blob[]) => Promise<FSItem | undefined>,
+    },
+    ai : {
+        chat : (prompt : string | ChatMessage[],
+                options? : PuterChatOptions,
+                testMode? : boolean,
+                imageUrl? : string | PuterChatOptions,
+            ) => Promise <AIResponse | undefined>,
+        img2txt : (
+            image : string | File | Blob,
+            testMode? : boolean
+        ) => Promise <string | undefined>,
+        feedback : (
+            path : string,
+            message : string
+        ) => Promise<AIResponse | undefined>
+    },
+    kv : {
+        get : (key : string) => Promise<string | null | undefined>,
+        set : (key: string, value : string) => Promise<boolean | undefined>,
+        delete : (ley : string) => Promise <boolean>,
+        list : (
+            pattern : string,
+            returnValues? : boolean
+        ) => Promise<string[] | KVItem[] | undefined> ,
+        flush : () => Promise<boolean | undefined>,
+    },
+
+    init : () => void, // for initializing the store
+    clearError : () => void
 }
 
-// const usePuterStore = create(set) => {
+// if window and puter exists, display puter, or null otherwise.
 
-// }
+const getPuter = () : typeof window.puter | null => 
+    typeof window !== undefined && window.puter ? window.puter : null;
+
+export const usePuterStore = create<PuterStore>((set, get)) => {
+    const setError = () => {
+        set({
+            
+        })
+    }
+}

@@ -13,3 +13,11 @@ interface ChatMessage{
 interface PuterChatOptions{
 
 }
+
+interface AIResponse{
+
+}
+
+interface KVItem {
+    
+}
