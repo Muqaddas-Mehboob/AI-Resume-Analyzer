@@ -132,10 +132,182 @@ interface PuterStore {
 const getPuter = () : typeof window.puter | null => 
     typeof window !== undefined && window.puter ? window.puter : null;
 
-// export const usePuterStore = create<PuterStore>((set, get)) => {
-//     const setError = () => {
-//         set({
 
-//         })
-//     }
-// }
+// This code defines a state store for your app.
+// setError is a helper that handles errors by resetting authentication and stopping loading.
+// The values (error, isLoading, auth methods) are based on your PuterStore interface, 
+// but the actual functions (signIn, signOut, etc.) are taken from the existing store state via get().
+
+export const usePuterStore = create<PuterStore>((set, get) => {
+    const setError = (msg : string) => {
+        set({
+            error : msg,
+            isLoading : false,
+            auth : {
+                user : null,
+                isAuthenticated : false,
+                signIn : get().auth.signIn,
+                signOut : get().auth.signOut,
+                refreshUser : get().auth.refreshUser,
+                checkAuthStatus : get().auth.checkAuthStatus,
+                getUser : get().auth.getUser,
+            }
+        })
+    }
+
+    const checkAuthStatus = async  () : Promise<boolean> => {
+        const puter = getPuter();
+        if(!puter) {
+            setError("Puter.js not available right now");
+            return false;
+        }
+
+        set({isLoading : true, error : null});
+
+        try {
+            const isSignedIn = await puter.auth.isSignedIn();
+            if(isSignedIn) {
+                const user = await puter.auth.isSignedIn();
+                set({
+                    auth:{
+                        user,
+                        isAuthenticated : true,
+                        signIn : get().auth.signIn,
+                        signOut : get().auth.signOut,
+                        refreshUser : get().auth.refreshUser,
+                        checkAuthStatus : get().auth.checkAuthStatus,
+                        getUser : () => user,
+                    },
+                    isLoading : false
+                })
+                return true
+            }
+            else {
+                set({
+                    auth : {
+                        user : null,
+                        isAuthenticated : false,
+                         signIn : get().auth.signIn,
+                        signOut : get().auth.signOut,
+                        refreshUser : get().auth.refreshUser,
+                        checkAuthStatus : get().auth.checkAuthStatus,
+                        getUser : () => null,
+                    },
+                    isLoading : false
+                })
+                return false
+            }
+            
+        } catch (error) {
+            const msg = error instanceof Error ? error.message : "Failed to check auth status";
+            setError(msg)
+            return false
+        }
+    }
+
+    const signIn = async () : Promise<void> => {
+        const puter = getPuter();
+
+        if(!puter) {
+            setError("Puter.js is not available right now");
+            return;
+        }
+
+        set({isLoading : true , error : null});
+
+        try {
+            await puter.auth.signIn();
+            await checkAuthStatus();
+        } catch (error) {
+            const msg = error instanceof Error ? error.message : "Sign In failed";
+            setError(msg)
+        }
+    }
+
+    const signOut = async () : Promise<void> => {
+        const puter = getPuter();
+
+        if(!puter) {
+            setError("Puter.js is not available right now");
+            return;
+        }
+
+        set({isLoading : true , error : null});
+
+        try {
+            await puter.auth.signOut();
+            set({
+                auth: {
+                    user : null,
+                    signIn : get().auth.signIn,
+                    signOut : get().auth.signOut,
+                    refreshUser : get().auth.refreshUser,
+                    isAuthenticated : false,
+                    checkAuthStatus : get().auth.checkAuthStatus,
+                    getUser : () => null,
+                },
+                isLoading : false
+            })
+        } catch (error) {
+            const msg = error instanceof Error ? error.message : "Sign Out failed";
+            setError(msg)
+        }
+    }
+
+    const refreshUser = async () : Promise<void> => {
+        const puter = getPuter();
+
+        if(!puter) {
+            setError("Puter.js is not available right now");
+            return;
+        }
+
+        set({isLoading : true , error : null});
+
+        try {
+            const user = await puter.auth.getUser();
+            set({
+                auth : {
+                    user,
+                    signIn : get().auth.signIn,
+                    signOut : get().auth.signOut,
+                    refreshUser : get().auth.refreshUser,
+                    isAuthenticated : true,
+                    checkAuthStatus : get().auth.checkAuthStatus,
+                    getUser : () => user,
+                },
+                isLoading : false,
+            })
+        } catch (error) {
+            const msg = error instanceof Error ? error.message : "Failed to refresh user";
+            setError(msg)
+        }
+    }
+
+    const init = () : void => {
+        const puter = getPuter();
+        if(puter){
+            set({puterReady : true})
+            checkAuthStatus()
+            return
+        }
+    }
+
+    const interval = setInterval(() => {
+        if(getPuter()){
+            clearInterval(interval)
+            set({puterReady: true})
+            checkAuthStatus()
+        }
+    }, 100);
+
+    setTimeout(() => {
+        clearInterval(interval);
+        if(!getPuter()){
+            setError("Puter.js failed to load within 10 seconds")
+        }
+    }, 1000);
+
+
+    
+})
