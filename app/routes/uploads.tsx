@@ -10,6 +10,21 @@ const Uploads = () => {
 
     const handleSubmit = (event : FormEvent<HTMLFormElement>) => {
 
+        event.preventDefault()
+
+        // Give form Data without relying on state
+        const form = event.currentTarget.closest('form')
+
+        if(!form) return
+
+
+        const formData = new FormData(form)
+
+        const companyName = formData.get('company-name') as string
+        const jobTitle = formData.get('job-title') as string
+        const jobDescription = formData.get('job-description') as string
+
+        console.log({companyName, jobDescription, jobTitle, file})
     }
 
     const handleFileSelect = (file : File | null) => {
@@ -44,7 +59,9 @@ const Uploads = () => {
                             </div>
                             <div className="form-div">
                                 <label htmlFor="job-description">Job Description</label>
-                                <textarea rows={5} placeholder="Write a clear and concise job description with responsibilities & expectations."></textarea>
+                                <textarea rows={5} placeholder="Write a clear and concise job description with responsibilities & expectations."
+                                name="job-description" id="job-description"
+                                ></textarea>
                             </div>
                             <div className="form-div">
                                 <label htmlFor="uploader">Upload Resume here</label>
