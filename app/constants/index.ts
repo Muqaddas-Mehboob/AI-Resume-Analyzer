@@ -191,6 +191,13 @@ export const resumes: Resume[] = [
 
 // So this acts as a blueprint/schema for the AI’s response.
 
+/* The `export const AIResponseFormat` is a string that describes a TypeScript interface. It serves as
+a blueprint or schema for the AI's response format. This format defines the structure of feedback
+that the AI model should provide when analyzing a resume. It includes fields such as overall score,
+ATS score with tips, tone and style score with tips, content score with tips, structure score with
+tips, and skills score with tips. Each section includes a score (out of 100) and tips for
+improvement or positive aspects. This format guides the AI on how to format and present the feedback
+it generates. */
 export const AIResponseFormat = `
       interface Feedback {
       overallScore: number; //max 100
