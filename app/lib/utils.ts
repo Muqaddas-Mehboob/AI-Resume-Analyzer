@@ -1,5 +1,15 @@
+// clsx is a tiny utility library that makes it easy to conditionally join class names in React (or plain JS).
+// clsx → builds className strings dynamically.
+// tailwind-merge → resolves Tailwind class conflicts.
+// cn (your helper) → wraps both together for convenience.
 
-// Logic for compressing the file format
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+// Tailwind + clsx helper
+export function cn(...input: ClassValue[]) {
+  return twMerge(clsx(input));
+}
 
 export default function formatSize(bytes : number) : string{
     if(bytes == 0) return '0 bytes';

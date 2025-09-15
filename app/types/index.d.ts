@@ -23,14 +23,14 @@ interface Feedback {
     ATS : {
         score : number;
         tips : {
-            type : "good | improve";
+            type : "good" | "improve";
             tip : string
         }[];
     };
     toneAndStyle : {
         score : number;
         tips : {
-            type : "good | improve";
+            type : "good" | "improve";
             tip : string;
             explanation: string;
         }[];

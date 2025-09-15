@@ -1,11 +1,11 @@
-interface Suggestion {
+interface Suggestions {
     type: "good" | "improve",
     tip: string,
 }
 
 interface ATSProps {
     score: number,
-    suggestions: Suggestion[]
+    suggestions: Suggestions[]
 }
 
 const ATS: React.FC<ATSProps> = ({ score, suggestions }) => {
