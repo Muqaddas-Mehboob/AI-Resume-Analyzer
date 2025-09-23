@@ -76,4 +76,4 @@ npm run dev
 Open [http://localhost:5173](http://localhost:5173) in your browser to view the project.
 
 ## <a name="live-demo">🤸 Live Demo</a>
-- [Give it a try and analyze your resume]([https://git-scm.com/](https://ai-resume-analyzer-eta-three.vercel.app/))
+- [Give it a try and analyze your resume](https://ai-resume-analyzer-eta-three.vercel.app/)
